@@ -15,14 +15,14 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xFFF9F9FC),
         leading: const Icon(Icons.account_circle),
-        title: Column(
+        title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "Hello!",
-              style: TextStyle(fontSize: 15, color: Colors.green.shade300),
+              style: TextStyle(fontSize: 15, color: Color(0xFFEFDAC7)),
             ),
-            const Text(
+            Text(
               "Dummy User",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
