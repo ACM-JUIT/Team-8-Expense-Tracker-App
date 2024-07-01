@@ -167,10 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      body: IndexedStack(
-        index: currentPage,
-        children: screens,
-      ),
+      body: screens[currentPage]
     );
   }
 }
