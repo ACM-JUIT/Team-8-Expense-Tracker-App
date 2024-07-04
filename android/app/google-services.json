@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "747947583106",
+    "project_id": "expense-tracker-365c9",
+    "storage_bucket": "expense-tracker-365c9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:747947583106:android:e45f99ac6b35027c46f69b",
+        "android_client_info": {
+          "package_name": "com.example.basecode"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "747947583106-epbra7sdh3clch1jrvfq7h87lec9kcrs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.basecode",
+            "certificate_hash": "343e77db5533034d553fd7aaab42d550db0801aa"
+          }
+        },
+        {
+          "client_id": "747947583106-iobf82gnp2qng87d4dmen0cvh3tpsubv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBobsKeUSJ6kRYe4eJd_mRfC744_hE-wLI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "747947583106-iobf82gnp2qng87d4dmen0cvh3tpsubv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "747947583106-rso53srlafhqsbigs906ke59gqvn543j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.basecode"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

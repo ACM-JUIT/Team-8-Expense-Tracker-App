@@ -1,4 +1,6 @@
+import 'package:basecode/services/auth/repository/auth_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -13,6 +15,13 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9FC),
       appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () {
+                context.read<AuthRepository>().signOut(context);
+              },
+              icon: Icon(Icons.logout))
+        ],
         backgroundColor: const Color(0xFFF9F9FC),
         leading: const Icon(Icons.account_circle),
         title: const Column(
@@ -32,16 +41,9 @@ class _MainScreenState extends State<MainScreen> {
           ],
         ),
       ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      // floatingActionButton: FloatingActionButton(
-      //   shape: const CircleBorder(),
-      //   backgroundColor: const Color(0xFF322F50),
-      //   onPressed: () {},
-      //   child: const Icon(
-      //     Icons.add,
-      //     color: Colors.white,
-      //   ),
-      // ),
+      body: Center(
+        child: Text(context.read<AuthRepository>().user.email!),
+      ),
     );
   }
 }
