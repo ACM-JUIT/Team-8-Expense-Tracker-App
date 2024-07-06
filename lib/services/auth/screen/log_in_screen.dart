@@ -1,8 +1,8 @@
 import 'package:basecode/components/my_button.dart';
 import 'package:basecode/components/my_textfield.dart';
 import 'package:basecode/components/square_tile.dart';
-import 'package:basecode/features/auth/repository/auth_repository.dart';
-import 'package:basecode/features/auth/screen/register_screen.dart';
+import 'package:basecode/services/auth/repository/auth_repository.dart';
+import 'package:basecode/services/auth/screen/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

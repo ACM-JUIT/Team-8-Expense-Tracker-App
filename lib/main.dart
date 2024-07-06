@@ -1,8 +1,8 @@
 import 'package:basecode/firebase_options.dart';
-import 'package:basecode/features/auth/repository/auth_repository.dart';
-import 'package:basecode/features/auth/screen/log_in_screen.dart';
-import 'package:basecode/features/home/screen/home_screen.dart';
-import 'package:basecode/features/on_boarding/screen/on_boarding_screen.dart';
+import 'package:basecode/services/auth/repository/auth_repository.dart';
+import 'package:basecode/services/auth/screen/log_in_screen.dart';
+import 'package:basecode/services/home/screen/home_screen.dart';
+import 'package:basecode/services/on_boarding/screen/on_boarding_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

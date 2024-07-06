@@ -1,7 +1,7 @@
 import 'package:basecode/components/show_snackbar.dart';
 import 'package:basecode/core/constants/constants.dart';
 import 'package:basecode/model/user_model.dart';
-import 'package:basecode/features/home/screen/home_screen.dart';
+import 'package:basecode/services/home/screen/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
