@@ -1,8 +1,8 @@
 import 'package:basecode/components/my_button.dart';
 import 'package:basecode/components/my_textfield.dart';
 import 'package:basecode/components/show_snackbar.dart';
-import 'package:basecode/services/auth/repository/auth_repository.dart';
-import 'package:basecode/services/auth/screen/log_in_screen.dart';
+import 'package:basecode/features/auth/repository/auth_repository.dart';
+import 'package:basecode/features/auth/screen/log_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -148,6 +148,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   MyButton(
                     text: "Register",
                     onTap: register,
+                    color: Color(0xFF0265FF),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

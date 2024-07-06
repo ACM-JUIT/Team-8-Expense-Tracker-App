@@ -1,7 +1,7 @@
 import 'package:basecode/components/budget_container.dart';
 import 'package:basecode/components/expense_income_tile.dart';
-import 'package:basecode/services/auth/repository/auth_repository.dart';
-import 'package:basecode/services/home/data/dummy_data.dart';
+import 'package:basecode/features/auth/repository/auth_repository.dart';
+import 'package:basecode/features/home/data/dummy_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -5,7 +5,11 @@ class BudgetContainer extends StatelessWidget {
   final String balance;
   final double? ratio1;
   final double? ratio2;
-  const BudgetContainer({super.key, required this.balance, required this.ratio1, required this.ratio2});
+  const BudgetContainer(
+      {super.key,
+      required this.balance,
+      required this.ratio1,
+      required this.ratio2});
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +61,7 @@ class BudgetContainer extends StatelessWidget {
                         centerSpaceRadius: 10,
                         sections: [
                           PieChartSectionData(
+                            radius: 35,
                             value: ratio1,
                             color: Color(0xFFB1D1D8),
                           ),
