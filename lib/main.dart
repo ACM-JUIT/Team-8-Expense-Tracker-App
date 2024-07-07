@@ -1,4 +1,5 @@
 import 'package:basecode/firebase_options.dart';
+import 'package:basecode/services/add_expense/repository/expense_repository.dart';
 import 'package:basecode/services/auth/repository/auth_repository.dart';
 import 'package:basecode/services/auth/screen/log_in_screen.dart';
 import 'package:basecode/services/home/screen/home_screen.dart';
@@ -31,8 +32,11 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<AuthRepository>(
-            create: (_) => AuthRepository(FirebaseAuth.instance)),
-        
+          create: (_) => AuthRepository(FirebaseAuth.instance),
+        ),
+        Provider(
+          create: (_) => ExpenseRepository(),
+        ),
       ],
       child: MaterialApp(
         title: 'Track it',

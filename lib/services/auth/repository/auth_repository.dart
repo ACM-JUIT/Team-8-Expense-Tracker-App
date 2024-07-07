@@ -15,6 +15,8 @@ class AuthRepository {
 
   User get user => _auth.currentUser!;
 
+  String get currentUid => _auth.currentUser!.uid;
+
   Stream<User?> get authState => FirebaseAuth.instance.authStateChanges();
 
   CollectionReference get _users =>
@@ -50,6 +52,7 @@ class AuthRepository {
         name: name,
         email: email,
         avatar: userCredential.user!.photoURL ?? Constants.avatarDefault,
+        phoneNumber: userCredential.user!.phoneNumber ?? '',
       );
       _users.doc(userCredential.user!.uid).set(userModel.toMap());
       if (userCredential.user != null) {
@@ -90,6 +93,7 @@ class AuthRepository {
             name: userCredential.user!.displayName ?? "No name",
             email: userCredential.user!.email!,
             avatar: userCredential.user!.photoURL ?? Constants.avatarDefault,
+            phoneNumber: userCredential.user!.phoneNumber ?? '',
           );
 
           await _users.doc(userModel.uid).set(userModel.toMap());

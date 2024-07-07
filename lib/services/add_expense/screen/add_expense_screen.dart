@@ -1,10 +1,13 @@
 import 'package:basecode/components/add_expense_tile.dart';
 import 'package:basecode/components/my_button.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:basecode/model/expense_model.dart';
+import 'package:basecode/services/add_expense/repository/expense_repository.dart';
+import 'package:basecode/services/add_expense/screen/category_creation.dart';
+import 'package:basecode/services/auth/repository/auth_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class AddExpenseScreen extends StatefulWidget {
   const AddExpenseScreen({super.key});
@@ -19,7 +22,6 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController datecontroller = TextEditingController();
   final TextEditingController categorycontroller = TextEditingController();
-  DateTime selectedDate = DateTime.now();
 
   List<String> myIcons = [
     'entertainment',
@@ -33,7 +35,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
   void pickDate() async {
     DateTime? newdate = await showDatePicker(
-      initialDate: selectedDate,
+      initialDate: DateTime.now(),
       context: context,
       firstDate: DateTime.now(),
       lastDate: DateTime.now().add(
@@ -43,7 +45,6 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
     if (newdate != null) {
       setState(() {
         datecontroller.text = DateFormat('dd/MM/yyyy').format(newdate);
-        selectedDate = newdate;
       });
     }
   }
@@ -62,11 +63,13 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
     descriptionController.dispose();
     categorycontroller.dispose();
     datecontroller.dispose();
-    categorycontroller.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final uid = context.read<AuthRepository>().currentUid;
+    DateTime? newDate;
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -98,10 +101,16 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                AddExpenseTile(
+                TextFormField(
                   controller: expenseController,
-                  hint: "Expense",
-                  onTap: () {},
+                  textAlignVertical: TextAlignVertical.center,
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(
+                      FontAwesomeIcons.dollarSign,
+                      size: 16,
+                      color: Colors.grey,
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 30),
                 TextFormField(
@@ -111,218 +120,8 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                   decoration: InputDecoration(
                       suffixIcon: IconButton(
                         onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (
-                              context,
-                            ) {
-                              bool isExpanded = false;
-                              String iconSelected = '';
-                              Color colorSelected = Colors.white;
-                              return StatefulBuilder(
-                                builder: (context, setState) {
-                                  return AlertDialog(
-                                    title: const Text("Create a Category"),
-                                    actions: [
-                                      MyButton(
-                                          text: "Save",
-                                          onTap: () {},
-                                          color: const Color(0xFF322F50))
-                                    ],
-                                    content: SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          TextFormField(
-                                            controller: nameController,
-                                            textAlignVertical:
-                                                TextAlignVertical.center,
-                                            decoration: InputDecoration(
-                                              hintText: "Name",
-                                              fillColor: Colors.white,
-                                              filled: true,
-                                              border: OutlineInputBorder(
-                                                borderSide: BorderSide.none,
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 16,
-                                          ),
-                                          TextFormField(
-                                            onTap: () {
-                                              setState(() {
-                                                isExpanded = !isExpanded;
-                                              });
-                                            },
-                                            textAlignVertical:
-                                                TextAlignVertical.center,
-                                            readOnly: true,
-                                            decoration: InputDecoration(
-                                              suffixIcon: IconButton(
-                                                onPressed: () {},
-                                                icon: Icon(
-                                                  isExpanded
-                                                      ? CupertinoIcons
-                                                          .chevron_up
-                                                      : CupertinoIcons
-                                                          .chevron_down,
-                                                  size: 18,
-                                                ),
-                                              ),
-                                              hintText: "Icon",
-                                              fillColor: Colors.white,
-                                              filled: true,
-                                              border: OutlineInputBorder(
-                                                borderSide: BorderSide.none,
-                                                borderRadius: isExpanded
-                                                    ? const BorderRadius.only(
-                                                        topLeft:
-                                                            Radius.circular(12),
-                                                        topRight:
-                                                            Radius.circular(12))
-                                                    : BorderRadius.circular(12),
-                                              ),
-                                            ),
-                                          ),
-                                          isExpanded
-                                              ? Container(
-                                                  width: MediaQuery.of(context)
-                                                      .size
-                                                      .width,
-                                                  height: 200,
-                                                  decoration: const BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.only(
-                                                              bottomLeft: Radius
-                                                                  .circular(12),
-                                                              bottomRight:
-                                                                  Radius
-                                                                      .circular(
-                                                                          12)),
-                                                      color: Colors.white),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 10.0),
-                                                    child: GridView.builder(
-                                                      gridDelegate:
-                                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                                              crossAxisCount: 3,
-                                                              mainAxisSpacing:
-                                                                  3,
-                                                              crossAxisSpacing:
-                                                                  5),
-                                                      itemCount: myIcons.length,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        final icon =
-                                                            myIcons[index];
-                                                        return GestureDetector(
-                                                          onTap: () {
-                                                            setState(() {
-                                                              iconSelected =
-                                                                  icon;
-                                                            });
-                                                          },
-                                                          child: Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              border:
-                                                                  Border.all(
-                                                                color: icon ==
-                                                                        iconSelected
-                                                                    ? const Color(
-                                                                        0xFF322F50)
-                                                                    : Colors
-                                                                        .grey
-                                                                        .shade100,
-                                                                width: 2,
-                                                              ),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20),
-                                                              image:
-                                                                  DecorationImage(
-                                                                image: AssetImage(
-                                                                    'assets/$icon.png'),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
-                                                    ),
-                                                  ),
-                                                )
-                                              : Container(),
-                                          const SizedBox(height: 16),
-                                          TextFormField(
-                                            textAlignVertical:
-                                                TextAlignVertical.center,
-                                            onTap: () {
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return AlertDialog(
-                                                      actions: [
-                                                        MyButton(
-                                                          text: "Save",
-                                                          onTap: () {},
-                                                          color: const Color(
-                                                              0xFF322F50),
-                                                        )
-                                                      ],
-                                                      content: Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: [
-                                                          ColorPicker(
-                                                              pickerColor:
-                                                                  colorSelected,
-                                                              onColorChanged:
-                                                                  (value) {
-                                                                setState(() {
-                                                                  colorSelected =
-                                                                      value;
-                                                                });
-                                                              }),
-                                                        ],
-                                                      ),
-                                                    );
-                                                  });
-                                            },
-                                            readOnly: true,
-                                            decoration: InputDecoration(
-                                              hintText: "Color",
-                                              filled: true,
-                                              fillColor: Colors.white,
-                                              suffix: Container(
-                                                width: 23,
-                                                height: 23,
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: colorSelected,
-                                                ),
-                                              ),
-                                              border: OutlineInputBorder(
-                                                borderSide: BorderSide.none,
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          );
+                          var category = getCategoryCreation(context);
+                          print(category);
                         },
                         icon: Icon(
                           FontAwesomeIcons.plus,
@@ -352,7 +151,20 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                     ),
                     suffixIcon: IconButton(
                       onPressed: () async {
-                        pickDate();
+                        newDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime.now(),
+                            lastDate:
+                                DateTime.now().add(const Duration(days: 365)));
+
+                        if (newDate != null) {
+                          setState(() {
+                            datecontroller.text =
+                                DateFormat('dd/MM/yyyy').format(newDate!);
+                            // selectDate = newDate;
+                          });
+                        }
                       },
                       icon: Icon(Icons.date_range_rounded),
                     ),
@@ -370,7 +182,19 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                       horizontal: 30.0, vertical: 30),
                   child: MyButton(
                     text: "Add Expense",
-                    onTap: () {},
+                    onTap: () async {
+                      final expense = Expense(
+                          amount: int.parse(expenseController.text),
+                          category: await context
+                              .read<ExpenseRepository>()
+                              .getCategory(uid),
+                          date: newDate ?? DateTime.now(),
+                          id: uid,
+                          description: descriptionController.text);
+                      context
+                          .read<ExpenseRepository>()
+                          .addExpense(uid, expense, context);
+                    },
                     color: const Color(0xFF322F50),
                   ),
                 )
