@@ -66,14 +66,31 @@ class ExpenseRepository {
     }
   }
 
+  Future<void> deleteExpense(
+    String uid,
+    Expense expense,
+    BuildContext context,
+  ) async {
+    try {
+      await _expense
+          .doc(uid)
+          .collection('user_expense')
+          .doc(expense.id)
+          .delete();
+    } catch (e) {
+      showSnackBar(
+        context,
+        e.toString(),
+      );
+    }
+  }
+
   Stream<List<Expense>> getAllExpense(String uid) {
     return _expense
         .doc(uid)
         .collection('user_expense')
         .snapshots()
         .map((snapshot) => snapshot.docs)
-        .map((docs) => docs
-            .map((doc) => Expense.fromMap(doc.data()))
-            .toList());
+        .map((docs) => docs.map((doc) => Expense.fromMap(doc.data())).toList());
   }
 }

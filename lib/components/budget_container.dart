@@ -37,7 +37,7 @@ class BudgetContainer extends StatelessWidget {
                 ),
               ),
               Text(
-                "\₹ " + balance,
+                balance,
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w900,
