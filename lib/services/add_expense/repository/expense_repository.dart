@@ -12,10 +12,20 @@ class ExpenseRepository {
   CollectionReference get _category =>
       FirebaseFirestore.instance.collection('category');
 
-  Future<Category> getCategory(String uid) async {
-    DocumentReference docRef = _category.doc(uid);
+  Future<Category> getCategory(String uid, String categoryId) async {
+    print("getcategory $categoryId");
+    DocumentReference docRef =
+        _category.doc(uid).collection('user_category').doc(categoryId);
     DocumentSnapshot docSnapshot = await docRef.get();
-    return Category.fromMap(docSnapshot.data() as Map<String,dynamic>);
+    return Category.fromMap(docSnapshot.data() as Map<String, dynamic>);
+  }
+
+  double _budget = 10000;
+
+  double get budget => _budget;
+
+  set updateBudget(double value) {
+    _budget = value;
   }
 
   Future<void> addCategory(
@@ -24,7 +34,11 @@ class ExpenseRepository {
     BuildContext context,
   ) async {
     try {
-      await _category.doc(uid).set(category.toMap());
+      await _category
+          .doc(uid)
+          .collection('user_category')
+          .doc(category.id)
+          .set(category.toMap());
     } catch (e) {
       showSnackBar(
         context,
@@ -39,12 +53,27 @@ class ExpenseRepository {
     BuildContext context,
   ) async {
     try {
-      await _expense.doc(uid).set(expense.toMap());
+      await _expense
+          .doc(uid)
+          .collection('user_expense')
+          .doc(expense.id)
+          .set(expense.toMap());
     } catch (e) {
       showSnackBar(
         context,
         e.toString(),
       );
     }
+  }
+
+  Stream<List<Expense>> getAllExpense(String uid) {
+    return _expense
+        .doc(uid)
+        .collection('user_expense')
+        .snapshots()
+        .map((snapshot) => snapshot.docs)
+        .map((docs) => docs
+            .map((doc) => Expense.fromMap(doc.data()))
+            .toList());
   }
 }

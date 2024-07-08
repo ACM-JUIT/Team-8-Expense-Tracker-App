@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class AddExpenseScreen extends StatefulWidget {
   const AddExpenseScreen({super.key});
@@ -68,6 +69,8 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   @override
   Widget build(BuildContext context) {
     final uid = context.read<AuthRepository>().currentUid;
+    final id = Uuid().v1();
+    print("add_expense $id");
     DateTime? newDate;
 
     return GestureDetector(
@@ -120,7 +123,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                   decoration: InputDecoration(
                       suffixIcon: IconButton(
                         onPressed: () {
-                          var category = getCategoryCreation(context);
+                          var category = getCategoryCreation(context, id);
                           print(category);
                         },
                         icon: Icon(
@@ -187,9 +190,9 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                           amount: int.parse(expenseController.text),
                           category: await context
                               .read<ExpenseRepository>()
-                              .getCategory(uid),
+                              .getCategory(uid, id),
                           date: newDate ?? DateTime.now(),
-                          id: uid,
+                          id: id,
                           description: descriptionController.text);
                       context
                           .read<ExpenseRepository>()

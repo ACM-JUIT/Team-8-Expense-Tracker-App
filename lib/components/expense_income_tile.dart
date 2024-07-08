@@ -8,7 +8,7 @@ class ExpenseIncomeTile extends StatelessWidget {
     super.key,
     required this.title,
     required this.value,
-    required this.color,
+    required this.color, 
   });
 
   @override
@@ -35,7 +35,7 @@ class ExpenseIncomeTile extends StatelessWidget {
                 ),
               ),
               Text(
-                value,
+                "\₹ " + value,
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
               ),
             ],

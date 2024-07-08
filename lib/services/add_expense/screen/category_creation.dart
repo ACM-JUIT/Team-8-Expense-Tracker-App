@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:provider/provider.dart';
 
-Future getCategoryCreation(BuildContext context) {
+Future getCategoryCreation(BuildContext context, String id) {
   List<String> myIcons = [
     'entertainment',
     'food',
@@ -17,6 +17,7 @@ Future getCategoryCreation(BuildContext context) {
     'tech',
     'travel'
   ];
+  print("add category $id");
   return showDialog(
     context: context,
     builder: (
@@ -43,9 +44,11 @@ Future getCategoryCreation(BuildContext context) {
                     category.color = colorSelected.value;
                     category.name = categoryNameController.text;
                     category.icon = iconSelected;
-                    category.id = uid;
+                    category.id = id;
                   });
-                  context.read<ExpenseRepository>().addCategory(uid, category,context);
+                  context
+                      .read<ExpenseRepository>()
+                      .addCategory(uid, category, context);
                   Navigator.of(context).pop();
                 },
                 color: const Color(0xFF322F50),

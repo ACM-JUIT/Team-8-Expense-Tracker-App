@@ -35,15 +35,15 @@ class BudgetContainer extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
-                      fontSize: 14,
+                      fontSize: 15,
                     ),
                   ),
                   Text(
-                    "\$ " + balance,
+                    "\₹ " + balance,
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w900,
-                      fontSize: 25,
+                      fontSize: 30,
                     ),
                   ),
                 ],
@@ -61,12 +61,25 @@ class BudgetContainer extends StatelessWidget {
                         centerSpaceRadius: 10,
                         sections: [
                           PieChartSectionData(
+                            badgeWidget: Text(
+                              "Expense",
+                              style: TextStyle(
+                                  fontSize: 10, fontWeight: FontWeight.w900),
+                            ),
                             radius: 35,
                             value: ratio1,
-                            color: Color(0xFFB1D1D8),
+                            showTitle: false,
+                            color: const Color(0xFFB1D1D8),
                           ),
                           PieChartSectionData(
+                            badgeWidget: Text(
+                              "Balance",
+                              style: TextStyle(
+                                  fontSize: 10, fontWeight: FontWeight.w900),
+                            ),
                             value: ratio2,
+                            radius: 35,
+                            showTitle: false,
                             color: Color(0xFFF9F9FC),
                           ),
                         ],

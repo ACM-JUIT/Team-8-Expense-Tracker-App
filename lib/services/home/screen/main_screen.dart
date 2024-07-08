@@ -1,5 +1,6 @@
 import 'package:basecode/components/budget_container.dart';
 import 'package:basecode/components/expense_income_tile.dart';
+import 'package:basecode/services/add_expense/repository/expense_repository.dart';
 import 'package:basecode/services/auth/repository/auth_repository.dart';
 import 'package:basecode/services/home/data/dummy_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,11 +15,16 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  
+
   @override
   Widget build(BuildContext context) {
+
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final expenseRepository = context.read<ExpenseRepository>();
+
     return StreamBuilder(
-      stream: Provider.of<AuthRepository>(context)
-          .getUserData(FirebaseAuth.instance.currentUser!.uid),
+      stream: Provider.of<AuthRepository>(context).getUserData(uid),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Scaffold(
@@ -55,105 +61,122 @@ class _MainScreenState extends State<MainScreen> {
                 ],
               ),
             ),
-            body: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                children: [
-                  BudgetContainer(balance: "37,540", ratio1: 60, ratio2: 40),
-                  const SizedBox(height: 40),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ExpenseIncomeTile(
-                        title: "Expense",
-                        value: "20,000",
-                        color: Color(0xFFB1D1D8),
-                      ),
-                      ExpenseIncomeTile(
-                        title: "Income",
-                        value: "50,000",
-                        color: Color(0xFFEFDAC7),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Recent Expenses",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Expanded(
-                    child: ListView.separated(
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: myData.length,
-                      separatorBuilder: (context, index) => const SizedBox(
-                        height: 20,
-                      ),
-                      itemBuilder: (context, index) {
-                        final item = myData[index];
-                        return Container(
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: item['color'],
-                                      shape: BoxShape.circle,
+            body: StreamBuilder(
+              stream: context.read<ExpenseRepository>().getAllExpense(uid),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  double totalAmount = snapshot.data!
+                      .fold<double>(0.0, (acc, e) => acc + e.amount);
+                  return Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      children: [
+                        BudgetContainer(
+                            balance: totalAmount == 0
+                                ? "Add Expense"
+                                : (expenseRepository.budget - totalAmount).toString(),
+                            ratio1:  (totalAmount / 1000) * 100,
+                            ratio2: 100 - (totalAmount / 1000) * 100),
+                        const SizedBox(height: 40),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ExpenseIncomeTile(
+                              title: "Expense",
+                              value: "20,000",
+                              color: Color(0xFFB1D1D8),
+                            ),
+                            ExpenseIncomeTile(
+                              title: "Income",
+                              value: "50,000",
+                              color: Color(0xFFEFDAC7),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Recent Expenses",
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Expanded(
+                          child: ListView.separated(
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: myData.length,
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(
+                              height: 20,
+                            ),
+                            itemBuilder: (context, index) {
+                              final item = myData[index];
+                              return Container(
+                                padding: const EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: item['color'],
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: Material(
+                                            shape: const CircleBorder(),
+                                            color: item['color'],
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(15),
+                                              child: item['icon'],
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 15,
+                                        ),
+                                        Text(
+                                          item['name'],
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16),
+                                        )
+                                      ],
                                     ),
-                                    child: Material(
-                                      shape: const CircleBorder(),
-                                      color: item['color'],
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(15),
-                                        child: item['icon'],
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  Text(
-                                    item['name'],
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Text(
-                                    item['amount'],
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                  Text(
-                                    item['date'],
-                                    style:
-                                        TextStyle(color: Colors.grey.shade400),
-                                  ),
-                                ],
-                              )
-                            ],
+                                    Column(
+                                      children: [
+                                        Text(
+                                          item['amount'],
+                                          style: const TextStyle(fontSize: 16),
+                                        ),
+                                        Text(
+                                          item['date'],
+                                          style: TextStyle(
+                                              color: Colors.grey.shade400),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
+                        )
+                      ],
                     ),
-                  )
-                ],
-              ),
+                  );
+                }
+                return Container();
+              },
             ),
           );
         }
