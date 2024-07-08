@@ -72,8 +72,9 @@ class _MainScreenState extends State<MainScreen> {
                         BudgetContainer(
                             balance: totalAmount == 0
                                 ? "Add Expense"
-                                : "₹ " + (expenseRepository.budget - totalAmount)
-                                    .toString(),
+                                : "₹ " +
+                                    (expenseRepository.budget - totalAmount)
+                                        .toString(),
                             ratio1: (totalAmount / 10000) * 100,
                             ratio2: 100 - (totalAmount / 10000) * 100),
                         const SizedBox(height: 40),
@@ -82,7 +83,7 @@ class _MainScreenState extends State<MainScreen> {
                           children: [
                             ExpenseIncomeTile(
                               title: "Expense",
-                              value:  totalAmount.toString(),
+                              value: totalAmount.toString(),
                               color: Color(0xFFB1D1D8),
                             ),
                             ExpenseIncomeTile(
@@ -108,14 +109,15 @@ class _MainScreenState extends State<MainScreen> {
                         Expanded(
                           child: snapshot.data!.length == 0
                               ? Center(
-                                child: Container(
-                                    child: Text("Add Expense",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 20
-                                    ),),
+                                  child: Container(
+                                    child: Text(
+                                      "Add Expense",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 20),
+                                    ),
                                   ),
-                              )
+                                )
                               : ListView.separated(
                                   physics: const BouncingScrollPhysics(),
                                   itemCount: snapshot.data!.length,

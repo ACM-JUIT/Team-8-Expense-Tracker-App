@@ -4,6 +4,7 @@ import 'package:basecode/model/expense_model.dart';
 import 'package:basecode/services/add_expense/repository/expense_repository.dart';
 import 'package:basecode/services/add_expense/screen/category_creation.dart';
 import 'package:basecode/services/auth/repository/auth_repository.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -108,10 +109,9 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                   controller: expenseController,
                   textAlignVertical: TextAlignVertical.center,
                   decoration: InputDecoration(
-                    prefixIcon: const Icon(
-                      FontAwesomeIcons.dollarSign,
-                      size: 16,
-                      color: Colors.grey,
+                    prefixIcon: TextButton(
+                      onPressed: () {},
+                      child: Text("₹"),
                     ),
                   ),
                 ),
@@ -121,21 +121,23 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                   onTap: () {},
                   controller: categorycontroller,
                   decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          var category = getCategoryCreation(context, id);
-                          print(category);
-                        },
-                        icon: Icon(
-                          FontAwesomeIcons.plus,
-                          size: 18,
-                          color: Colors.grey.shade700,
-                        ),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        var category = getCategoryCreation(context, id);
+                        print(category);
+                      },
+                      icon: Icon(
+                        FontAwesomeIcons.plus,
+                        size: 18,
+                        color: Colors.grey.shade700,
                       ),
-                      hintText: "Category",
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 20),
-                      hintStyle: TextStyle(color: Colors.grey)),
+                    ),
+                    hintText: "Category",
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
                   textAlignVertical: TextAlignVertical.center,
                 ),
                 const SizedBox(height: 30),
@@ -187,16 +189,25 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                     text: "Add Expense",
                     onTap: () async {
                       final expense = Expense(
-                          amount: int.parse(expenseController.text),
-                          category: await context
-                              .read<ExpenseRepository>()
-                              .getCategory(uid, id),
-                          date: newDate ?? DateTime.now(),
-                          id: id,
-                          description: descriptionController.text);
+                        amount: int.parse(expenseController.text),
+                        category: await context
+                            .read<ExpenseRepository>()
+                            .getCategory(uid, id),
+                        date: newDate ?? DateTime.now(),
+                        id: id,
+                        description: descriptionController.text,
+                      );
                       context
                           .read<ExpenseRepository>()
                           .addExpense(uid, expense, context);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            "Expense Added!!!!",
+                          ),
+                        ),
+                      );
                     },
                     color: const Color(0xFF322F50),
                   ),
