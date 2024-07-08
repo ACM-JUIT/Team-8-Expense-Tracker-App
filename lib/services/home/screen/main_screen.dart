@@ -2,9 +2,9 @@ import 'package:basecode/components/budget_container.dart';
 import 'package:basecode/components/expense_income_tile.dart';
 import 'package:basecode/services/add_expense/repository/expense_repository.dart';
 import 'package:basecode/services/auth/repository/auth_repository.dart';
-import 'package:basecode/services/home/data/dummy_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
@@ -15,11 +15,8 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  
-
   @override
   Widget build(BuildContext context) {
-
     final uid = FirebaseAuth.instance.currentUser!.uid;
     final expenseRepository = context.read<ExpenseRepository>();
 
@@ -74,8 +71,9 @@ class _MainScreenState extends State<MainScreen> {
                         BudgetContainer(
                             balance: totalAmount == 0
                                 ? "Add Expense"
-                                : (expenseRepository.budget - totalAmount).toString(),
-                            ratio1:  (totalAmount / 1000) * 100,
+                                : (expenseRepository.budget - totalAmount)
+                                    .toString(),
+                            ratio1: (totalAmount / 1000) * 100,
                             ratio2: 100 - (totalAmount / 1000) * 100),
                         const SizedBox(height: 40),
                         Row(
@@ -108,13 +106,13 @@ class _MainScreenState extends State<MainScreen> {
                         Expanded(
                           child: ListView.separated(
                             physics: const BouncingScrollPhysics(),
-                            itemCount: myData.length,
+                            itemCount: snapshot.data!.length,
                             separatorBuilder: (context, index) =>
                                 const SizedBox(
                               height: 20,
                             ),
                             itemBuilder: (context, index) {
-                              final item = myData[index];
+                              final expense = snapshot.data![index];
                               return Container(
                                 padding: const EdgeInsets.all(20),
                                 decoration: BoxDecoration(
@@ -129,15 +127,17 @@ class _MainScreenState extends State<MainScreen> {
                                       children: [
                                         Container(
                                           decoration: BoxDecoration(
-                                            color: item['color'],
+                                            color:
+                                                Color(expense.category.color),
                                             shape: BoxShape.circle,
                                           ),
                                           child: Material(
                                             shape: const CircleBorder(),
-                                            color: item['color'],
+                                            color: Color(expense.category.color),
                                             child: Padding(
                                               padding: const EdgeInsets.all(15),
-                                              child: item['icon'],
+                                              child: Image.asset(
+                                                  'assets/${expense.category.icon}.png'),
                                             ),
                                           ),
                                         ),
@@ -145,7 +145,7 @@ class _MainScreenState extends State<MainScreen> {
                                           width: 15,
                                         ),
                                         Text(
-                                          item['name'],
+                                          expense.category.name,
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16),
@@ -155,11 +155,11 @@ class _MainScreenState extends State<MainScreen> {
                                     Column(
                                       children: [
                                         Text(
-                                          item['amount'],
+                                          "-₹ ${expense.amount}",
                                           style: const TextStyle(fontSize: 16),
                                         ),
                                         Text(
-                                          item['date'],
+                                          DateFormat('dd/MM/yyyy').format(expense.date),
                                           style: TextStyle(
                                               color: Colors.grey.shade400),
                                         ),
@@ -175,7 +175,9 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                   );
                 }
-                return Container();
+                return Center(
+                  child: Text("Add Expense"),
+                );
               },
             ),
           );
