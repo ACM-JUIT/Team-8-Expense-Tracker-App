@@ -23,7 +23,7 @@ class _MainScreenState extends State<MainScreen> {
     return StreamBuilder(
       stream: Provider.of<AuthRepository>(context).getUserData(uid),
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.hasData) { 
           return Scaffold(
             backgroundColor: const Color(0xFFF0F0F2),
             appBar: AppBar(
