@@ -213,6 +213,11 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                   );
                 }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
                 return Center(
                   child: Text("Add Expense"),
                 );

@@ -53,11 +53,22 @@ class ExpenseRepository {
     BuildContext context,
   ) async {
     try {
-      await _expense
+      QuerySnapshot querySnapshot = await _expense
           .doc(uid)
           .collection('user_expense')
-          .doc(expense.id)
-          .set(expense.toMap());
+          .where('category.name', isEqualTo: expense.category.name)
+          .get();
+      if (querySnapshot.docs.isNotEmpty) {
+        int amount = querySnapshot.docs.first['amount'];
+        await querySnapshot.docs.first.reference
+            .update({'amount': amount + expense.amount});
+      } else {
+        await _expense
+            .doc(uid)
+            .collection('user_expense')
+            .doc(expense.id)
+            .set(expense.toMap());
+      }
     } catch (e) {
       showSnackBar(
         context,
