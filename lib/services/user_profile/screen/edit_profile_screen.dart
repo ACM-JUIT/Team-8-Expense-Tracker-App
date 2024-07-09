@@ -1,10 +1,23 @@
+import 'dart:io';
+
 import 'package:basecode/components/edit_profile_tile.dart';
+import 'package:basecode/model/user_model.dart';
 import 'package:basecode/services/auth/repository/auth_repository.dart';
+import 'package:basecode/services/user_profile/repository/storage_repository.dart';
+import 'package:basecode/services/user_profile/repository/user_profile_repository.dart';
+import 'package:basecode/utils/pick_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({super.key});
+  final String name;
+  final String phoneNumber;
+  final double budget;
+  const EditProfileScreen(
+      {super.key,
+      required this.name,
+      required this.phoneNumber,
+      required this.budget});
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
@@ -12,84 +25,132 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   final TextEditingController budgetController = TextEditingController();
+  File? profileFile;
+
+  void saveChanges(UserModel user, File? profileFile, BuildContext context) async {
+    if (profileFile != null) {
+      final res = await context.read<StorageRepository>().storeFile(
+            path: 'user/profile',
+            id: context.read<AuthRepository>().currentUid,
+            file: profileFile,
+            context: context,
+          );
+      context.read<UserProfileRepository>().editProfile(
+          user.copyWith(
+            name: nameController.text,
+            phoneNumber: phoneController.text,
+            budget: double.parse(budgetController.text),
+            avatar: res,
+          ),
+          context);
+    } else {
+      context.read<UserProfileRepository>().editProfile(
+          user.copyWith(
+            name: nameController.text,
+            phoneNumber: phoneController.text,
+            budget: double.parse(budgetController.text),
+          ),
+          context);
+    }
+  }
+
+  void selecteProfileImage() async {
+    final res = await pickImage();
+    if (res != null) {
+      setState(() {
+        profileFile = File(res.files.first.path!);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    nameController.text = widget.name;
+    phoneController.text = widget.phoneNumber;
+    budgetController.text = widget.budget.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
     final uid = Provider.of<AuthRepository>(context).currentUid;
     final user = Provider.of<AuthRepository>(context).getUserData(uid);
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFF0F0F2),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFF0F0F2),
-        title: Text(
-          "Edit profile",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {},
-            child: Text("Save",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 15,
-              fontWeight: FontWeight.bold
-            ),),
-          )
-        ],
-        centerTitle: true,
-      ),
-      body: StreamBuilder(
-        stream: user,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return SingleChildScrollView(
+    return StreamBuilder(
+      stream: user,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Scaffold(
+            backgroundColor: const Color(0xFFF0F0F2),
+            appBar: AppBar(
+              backgroundColor: const Color(0xFFF0F0F2),
+              title: Text(
+                "Edit profile",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => saveChanges(snapshot.data!,profileFile, context),
+                  child: Text(
+                    "Save",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                )
+              ],
+              centerTitle: true,
+            ),
+            body: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.18,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(snapshot.data!.avatar),
+                    GestureDetector(
+                      onTap: selecteProfileImage,
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.18,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(snapshot.data!.avatar),
+                          ),
+                          shape: BoxShape.circle,
                         ),
-                        shape: BoxShape.circle,
                       ),
                     ),
                     const SizedBox(height: 40),
                     EditProfileTile(
-                      hint: snapshot.data!.name,
                       leading: "Name",
                       contoller: nameController,
                     ),
                     const SizedBox(height: 20),
                     EditProfileTile(
-                      hint: snapshot.data!.phoneNumber,
                       leading: "Phone Number",
-                      contoller: nameController,
+                      contoller: phoneController,
                     ),
                     const SizedBox(height: 20),
                     EditProfileTile(
-                      hint: snapshot.data!.name,
                       leading: "Budget",
-                      contoller: nameController,
+                      contoller: budgetController,
                     ),
                   ],
                 ),
               ),
-            );
-          }
-          return Center(
-            child: CircularProgressIndicator(),
+            ),
           );
-        },
-      ),
+        }
+        return Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
     );
   }
 }

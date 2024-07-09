@@ -51,6 +51,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           color: Colors.grey,
                         ),
                       ),
+                      Text(
+                        snapshot.data!.phoneNumber,
+                        style: TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
                       const SizedBox(height: 10),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -61,11 +67,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       const SizedBox(height: 20),
                       UserProfileTile(
                         title: "UserProfile",
-                        subTitle: "Change profile image, name, password,etc.",
+                        subTitle: "Change profile image, name, phone number,etc.",
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => EditProfileScreen(),
+                              builder: (context) => EditProfileScreen(
+                                name: snapshot.data!.name,
+                                phoneNumber: snapshot.data!.phoneNumber,
+                                budget: snapshot.data!.budget,
+                              ),
                             ),
                           );
                         },

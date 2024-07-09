@@ -22,8 +22,8 @@ class _MainScreenState extends State<MainScreen> {
 
     return StreamBuilder(
       stream: Provider.of<AuthRepository>(context).getUserData(uid),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) { 
+      builder: (context, user) {
+        if (user.hasData) {
           return Scaffold(
             backgroundColor: const Color(0xFFF0F0F2),
             appBar: AppBar(
@@ -31,7 +31,7 @@ class _MainScreenState extends State<MainScreen> {
               leading: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CircleAvatar(
-                  backgroundImage: NetworkImage(snapshot.data!.avatar),
+                  backgroundImage: NetworkImage(user.data!.avatar),
                 ),
               ),
               title: Column(
@@ -42,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
                     style: TextStyle(fontSize: 15, color: Color(0xFFB8B9C2)),
                   ),
                   Text(
-                    snapshot.data!.name,
+                    user.data!.name,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF322F50),
@@ -58,6 +58,8 @@ class _MainScreenState extends State<MainScreen> {
                 if (snapshot.hasData) {
                   double totalAmount = snapshot.data!
                       .fold<double>(0.0, (acc, e) => acc + e.amount);
+
+                  double budget = user.data!.budget;
                   return Padding(
                     padding: const EdgeInsets.all(12),
                     child: Column(
@@ -66,10 +68,10 @@ class _MainScreenState extends State<MainScreen> {
                             balance: totalAmount == 0
                                 ? "Add Expense"
                                 : "₹ " +
-                                    (expenseRepository.budget - totalAmount)
+                                    (budget - totalAmount)
                                         .toString(),
-                            ratio1: (totalAmount / 10000) * 100,
-                            ratio2: 100 - (totalAmount / 10000) * 100),
+                            ratio1: (totalAmount / budget) * 100,
+                            ratio2: 100 - (totalAmount / budget) * 100),
                         const SizedBox(height: 40),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

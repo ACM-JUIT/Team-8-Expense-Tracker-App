@@ -51,6 +51,7 @@ class AuthRepository {
         uid: userCredential.user!.uid,
         name: name,
         email: email,
+        budget: 10000,
         avatar: userCredential.user!.photoURL ?? Constants.avatarDefault,
         phoneNumber: userCredential.user!.phoneNumber ?? '',
       );
@@ -93,6 +94,7 @@ class AuthRepository {
             name: userCredential.user!.displayName ?? "No name",
             email: userCredential.user!.email!,
             avatar: userCredential.user!.photoURL ?? Constants.avatarDefault,
+            budget: 10000,
             phoneNumber: userCredential.user!.phoneNumber ?? '',
           );
 
