@@ -121,6 +121,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   MyButton(
                     text: "Log in",
                     onTap: login,
+                    color: Color(0xFF0265FF),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

@@ -1,7 +1,6 @@
 import 'package:basecode/components/my_button.dart';
 import 'package:basecode/components/my_textfield.dart';
 import 'package:basecode/components/show_snackbar.dart';
-import 'package:basecode/components/square_tile.dart';
 import 'package:basecode/services/auth/repository/auth_repository.dart';
 import 'package:basecode/services/auth/screen/log_in_screen.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +18,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+  final TextEditingController nameController =
+      TextEditingController();
 
   void register() async {
     if (passwordController.text == confirmPasswordController.text) {
@@ -26,6 +27,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             email:emailController.text,
             password: passwordController.text,
             context: context,
+            name: nameController.text,
           );
     } else {
       showSnackBar(
@@ -88,6 +90,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     height: 20,
                   ),
                   const Text(
+                    "Name",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  MyTextfield(
+                    controller: nameController,
+                    obscureText: false,
+                    hint: "Enter your name here",
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
                     "Email",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -132,6 +148,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   MyButton(
                     text: "Register",
                     onTap: register,
+                    color: Color(0xFF0265FF),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -162,26 +179,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       )
                     ],
                   ),
-                  const SizedBox(height: 40),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SquareTile(
-                        imagePath: 'assets/google.png',
-                        onTap: () {},
-                      ),
-                      SizedBox(width: 25),
-                      SquareTile(
-                        imagePath: 'assets/apple.png',
-                        onTap: () {},
-                      ),
-                      SizedBox(width: 25),
-                      SquareTile(
-                        imagePath: 'assets/facebook.png',
-                        onTap: () {},
-                      )
-                    ],
-                  ),
+                  
                 ],
               ),
             ),
