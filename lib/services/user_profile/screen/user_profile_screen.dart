@@ -1,5 +1,6 @@
 import 'package:basecode/components/profile_tile.dart';
 import 'package:basecode/services/auth/repository/auth_repository.dart';
+import 'package:basecode/services/user_profile/screen/edit_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -60,8 +61,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       const SizedBox(height: 20),
                       UserProfileTile(
                         title: "UserProfile",
-                        subTitle: "Change profile image, name, password,etc",
-                        onTap: () {},
+                        subTitle: "Change profile image, name, password,etc.",
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => EditProfileScreen(),
+                            ),
+                          );
+                        },
                         icon: Icons.account_circle,
                       ),
                       const SizedBox(height: 10),
@@ -74,8 +81,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       const SizedBox(height: 10),
                       UserProfileTile(
                         title: "LogOut",
-                        subTitle: "Log out, but your data wil remain.",
-                        onTap: () {},
+                        subTitle: "Log out, your data wil persist.",
+                        onTap: () {
+                          context.read<AuthRepository>().signOut(context);
+                        },
                         icon: Icons.logout,
                       )
                     ],

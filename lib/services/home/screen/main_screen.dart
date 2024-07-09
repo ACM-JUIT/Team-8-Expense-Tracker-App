@@ -28,13 +28,6 @@ class _MainScreenState extends State<MainScreen> {
             backgroundColor: const Color(0xFFF0F0F2),
             appBar: AppBar(
               backgroundColor: const Color(0xFFF0F0F2),
-              actions: [
-                IconButton(
-                    onPressed: () {
-                      context.read<AuthRepository>().signOut(context);
-                    },
-                    icon: Icon(Icons.logout))
-              ],
               leading: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CircleAvatar(
