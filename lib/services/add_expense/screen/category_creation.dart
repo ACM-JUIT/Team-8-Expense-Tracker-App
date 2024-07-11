@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 
 Future getCategoryCreation(BuildContext context, String id) {
   List<String> myIcons = [
+    'education',
     'entertainment',
     'food',
     'home',
