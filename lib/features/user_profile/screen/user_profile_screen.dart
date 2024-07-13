@@ -1,6 +1,6 @@
 import 'package:basecode/components/profile_tile.dart';
-import 'package:basecode/services/auth/repository/auth_repository.dart';
-import 'package:basecode/services/user_profile/screen/edit_profile_screen.dart';
+import 'package:basecode/features/auth/repository/auth_repository.dart';
+import 'package:basecode/features/user_profile/screen/edit_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -75,6 +75,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 name: snapshot.data!.name,
                                 phoneNumber: snapshot.data!.phoneNumber,
                                 budget: snapshot.data!.budget,
+                                limit: snapshot.data!.limit,
                               ),
                             ),
                           );

@@ -1,9 +1,9 @@
 import 'package:basecode/components/add_expense_tile.dart';
 import 'package:basecode/components/my_button.dart';
 import 'package:basecode/model/expense_model.dart';
-import 'package:basecode/services/add_expense/repository/expense_repository.dart';
-import 'package:basecode/services/add_expense/screen/category_creation.dart';
-import 'package:basecode/services/auth/repository/auth_repository.dart';
+import 'package:basecode/features/add_expense/repository/expense_repository.dart';
+import 'package:basecode/features/add_expense/screen/category_creation.dart';
+import 'package:basecode/features/auth/repository/auth_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

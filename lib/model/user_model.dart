@@ -1,5 +1,3 @@
-
-
 class UserModel {
   final String uid;
   final String name;
@@ -7,6 +5,8 @@ class UserModel {
   final String avatar;
   final double budget;
   final String phoneNumber;
+  final double limit;
+
   UserModel({
     required this.uid,
     required this.name,
@@ -14,7 +14,10 @@ class UserModel {
     required this.avatar,
     required this.budget,
     required this.phoneNumber,
+    required this.limit,
   });
+  
+
   
 
   UserModel copyWith({
@@ -24,6 +27,7 @@ class UserModel {
     String? avatar,
     double? budget,
     String? phoneNumber,
+    double? limit,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
@@ -32,6 +36,7 @@ class UserModel {
       avatar: avatar ?? this.avatar,
       budget: budget ?? this.budget,
       phoneNumber: phoneNumber ?? this.phoneNumber,
+      limit: limit ?? this.limit,
     );
   }
 
@@ -43,6 +48,7 @@ class UserModel {
       'avatar': avatar,
       'budget': budget,
       'phoneNumber': phoneNumber,
+      'limit': limit,
     };
   }
 
@@ -54,6 +60,7 @@ class UserModel {
       avatar: map['avatar'] ?? '',
       budget: map['budget']?.toDouble() ?? 0.0,
       phoneNumber: map['phoneNumber'] ?? '',
+      limit: map['limit']?.toDouble() ?? 0.0,
     );
   }
 }

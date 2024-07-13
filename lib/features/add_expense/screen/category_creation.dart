@@ -1,7 +1,7 @@
 import 'package:basecode/components/my_button.dart';
 import 'package:basecode/model/category_model.dart';
-import 'package:basecode/services/add_expense/repository/expense_repository.dart';
-import 'package:basecode/services/auth/repository/auth_repository.dart';
+import 'package:basecode/features/add_expense/repository/expense_repository.dart';
+import 'package:basecode/features/auth/repository/auth_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';

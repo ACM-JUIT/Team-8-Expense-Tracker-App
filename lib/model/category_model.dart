@@ -12,9 +12,6 @@ class Category {
     required this.icon,
     required this.color,
   });
-
-
-  
   Category copyWith({
     String? id,
     String? name,

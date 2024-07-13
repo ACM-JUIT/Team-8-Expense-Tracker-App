@@ -1,8 +1,8 @@
-import 'package:basecode/services/add_expense/screen/add_expense_screen.dart';
-import 'package:basecode/services/home/screen/main_screen.dart';
-import 'package:basecode/services/savings/screen/savings_screen.dart';
-import 'package:basecode/services/stats/screen/statistics_screen.dart';
-import 'package:basecode/services/user_profile/screen/user_profile_screen.dart';
+import 'package:basecode/features/add_expense/screen/add_expense_screen.dart';
+import 'package:basecode/features/home/screen/main_screen.dart';
+import 'package:basecode/features/savings/screen/savings_screen.dart';
+import 'package:basecode/features/stats/screen/statistics_screen.dart';
+import 'package:basecode/features/user_profile/screen/user_profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
