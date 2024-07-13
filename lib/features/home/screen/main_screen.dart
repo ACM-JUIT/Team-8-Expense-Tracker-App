@@ -1,3 +1,4 @@
+
 import 'package:basecode/components/budget_container.dart';
 import 'package:basecode/components/expense_income_tile.dart';
 import 'package:basecode/features/add_expense/repository/expense_repository.dart';
@@ -185,76 +186,169 @@ class _MainScreenState extends State<MainScreen> {
                                                   .deleteExpense(
                                                       uid, expense, context);
                                             },
-                                            child: Container(
-                                              padding: const EdgeInsets.all(20),
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Colors.white,
-                                                          shape:
-                                                              BoxShape.circle,
-                                                        ),
-                                                        child: Material(
-                                                          shape:
-                                                              const CircleBorder(),
-                                                          color: Color(expense
-                                                              .category.color),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(15),
-                                                            child: Image.asset(
-                                                              'assets/${expense.category.icon}.png',
-                                                              height: 40,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                print(expense.description);
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return AlertDialog(
+                                                      title: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            expense
+                                                                .category.name,
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Color(
+                                                                  expense
+                                                                      .category
+                                                                      .color),
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            "\₹" +
+                                                                expense.amount
+                                                                    .toString(),
+                                                            style: TextStyle(
+                                                              fontSize: 14,
+                                                              color: Colors.red,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child: Text(
+                                                            "Ok",
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.green,
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
-                                                      const SizedBox(
-                                                        width: 15,
-                                                      ),
-                                                      Text(
-                                                        expense.category.name,
-                                                        style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 16,
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Provider.of<ExpenseRepository>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .deleteExpense(
+                                                                    uid,
+                                                                    expense,
+                                                                    context);
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child: Text(
+                                                            "Delete",
+                                                            style: TextStyle(
+                                                              color: Colors.red,
+                                                            ),
+                                                          ),
                                                         ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  Column(
-                                                    children: [
-                                                      Text(
-                                                        "- ₹ ${expense.amount}",
-                                                        style: const TextStyle(
+                                                      ],
+                                                      content: Container(
+                                                        child: Text(
+                                                          "${expense.description}",
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(20),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors.white,
+                                                            shape:
+                                                                BoxShape.circle,
+                                                          ),
+                                                          child: Material(
+                                                            shape:
+                                                                const CircleBorder(),
+                                                            color: Color(expense
+                                                                .category
+                                                                .color),
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(15),
+                                                              child:
+                                                                  Image.asset(
+                                                                'assets/${expense.category.icon}.png',
+                                                                height: 40,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 15,
+                                                        ),
+                                                        Text(
+                                                          expense.category.name,
+                                                          style:
+                                                              const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
                                                             fontSize: 16,
-                                                            color: Colors.red),
-                                                      ),
-                                                      Text(
-                                                        DateFormat('dd/MM/yyyy')
-                                                            .format(
-                                                                expense.date),
-                                                        style: TextStyle(
-                                                          color: Colors
-                                                              .grey.shade400,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Text(
+                                                          "- ₹ ${expense.amount}",
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize: 16,
+                                                                  color: Colors
+                                                                      .red),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
+                                                        Text(
+                                                          DateFormat(
+                                                                  'dd/MM/yyyy')
+                                                              .format(
+                                                                  expense.date),
+                                                          style: TextStyle(
+                                                            color: Colors
+                                                                .grey.shade400,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           );

@@ -56,7 +56,10 @@ class ExpenseRepository {
       QuerySnapshot querySnapshot = await _expense
           .doc(uid)
           .collection('user_expense')
-          .where('category.name', isEqualTo: expense.category.name)
+          .where(
+            'category.name',
+            isEqualTo: expense.category.name,
+          )
           .get();
       if (querySnapshot.docs.isNotEmpty) {
         int amount = querySnapshot.docs.first['amount'];

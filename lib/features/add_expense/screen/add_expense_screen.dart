@@ -4,7 +4,6 @@ import 'package:basecode/model/expense_model.dart';
 import 'package:basecode/features/add_expense/repository/expense_repository.dart';
 import 'package:basecode/features/add_expense/screen/category_creation.dart';
 import 'package:basecode/features/auth/repository/auth_repository.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -62,16 +61,15 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
     super.dispose();
     expenseController.dispose();
     nameController.dispose();
-    descriptionController.dispose();
     categorycontroller.dispose();
     datecontroller.dispose();
+    descriptionController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final uid = context.read<AuthRepository>().currentUid;
     final id = Uuid().v1();
-    print("add_expense $id");
     DateTime? newDate;
 
     return GestureDetector(
@@ -83,12 +81,6 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
         backgroundColor: const Color(0xFFF0F0F2),
         appBar: AppBar(
           backgroundColor: const Color(0xFFF0F0F2),
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: Icon(Icons.arrow_back),
-          ),
           title: Text(
             "Expenses",
             style: TextStyle(
@@ -144,11 +136,15 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 TextField(
                   controller: datecontroller,
                   readOnly: true,
+                  
                   onTap: () async {
                     pickDate();
                   },
                   textAlignVertical: TextAlignVertical.center,
                   decoration: InputDecoration(
+                    counterStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                     hintText: "Date",
                     hintStyle: TextStyle(
@@ -167,7 +163,6 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                           setState(() {
                             datecontroller.text =
                                 DateFormat('dd/MM/yyyy').format(newDate!);
-                            // selectDate = newDate;
                           });
                         }
                       },
@@ -195,7 +190,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                             .getCategory(uid, id),
                         date: newDate ?? DateTime.now(),
                         id: id,
-                        description: descriptionController.text,
+                        description: descriptionController.text.trim(),
                       );
                       context
                           .read<ExpenseRepository>()
