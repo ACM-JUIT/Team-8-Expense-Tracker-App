@@ -50,8 +50,8 @@ class BudgetContainer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                height: 80,
-                width: 80,
+                height: 70,
+                width: 70,
                 child: PieChart(
                   swapAnimationDuration: Duration(milliseconds: 750),
                   swapAnimationCurve: Curves.easeInOutCirc,

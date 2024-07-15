@@ -1,8 +1,7 @@
+import 'package:basecode/features/auth/repository/auth_gate.dart';
 import 'package:basecode/firebase_options.dart';
 import 'package:basecode/features/add_expense/repository/expense_repository.dart';
 import 'package:basecode/features/auth/repository/auth_repository.dart';
-import 'package:basecode/features/auth/screen/log_in_screen.dart';
-import 'package:basecode/features/home/screen/home_screen.dart';
 import 'package:basecode/features/on_boarding/screen/on_boarding_screen.dart';
 import 'package:basecode/features/user_profile/repository/storage_repository.dart';
 import 'package:basecode/features/user_profile/repository/user_profile_repository.dart';
@@ -42,10 +41,12 @@ class MyApp extends StatelessWidget {
           create: (_) => ExpenseRepository(),
         ),
         Provider(
-          create: (_) => UserProfileRepository(firestore: FirebaseFirestore.instance),
+          create: (_) =>
+              UserProfileRepository(firestore: FirebaseFirestore.instance),
         ),
         Provider(
-          create: (_) => StorageRepository(firebaseStorage: FirebaseStorage.instance),
+          create: (_) =>
+              StorageRepository(firebaseStorage: FirebaseStorage.instance),
         ),
       ],
       child: MaterialApp(
@@ -61,22 +62,4 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class AuthGate extends StatelessWidget {
-  const AuthGate({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return const HomeScreen();
-          } else {
-            return const LogInScreen();
-          }
-        },
-      ),
-    );
-  }
-}

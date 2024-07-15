@@ -17,7 +17,7 @@ class _LogInScreenState extends State<LogInScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  void login() async {
+  void login(BuildContext context) async {
     context.read<AuthRepository>().loginUser(
           emailController.text,
           passwordController.text,
@@ -25,7 +25,7 @@ class _LogInScreenState extends State<LogInScreen> {
         );
   }
 
-  void loginWithGoogle() async {
+  void loginWithGoogle(BuildContext context) async {
     context.read<AuthRepository>().signInWithGoogle(context);
   }
 
@@ -120,7 +120,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   const SizedBox(height: 30),
                   MyButton(
                     text: "Log in",
-                    onTap: login,
+                    onTap: () => login(context),
                     color: Color(0xFF0265FF),
                   ),
                   Row(
@@ -185,7 +185,7 @@ class _LogInScreenState extends State<LogInScreen> {
                     children: [
                       SquareTile(
                         imagePath: 'assets/google.png',
-                        onTap: loginWithGoogle,
+                        onTap: () => loginWithGoogle(context),
                       ),
                       SizedBox(width: 25),
                       SquareTile(

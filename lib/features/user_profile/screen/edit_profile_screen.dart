@@ -57,6 +57,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             name: nameController.text,
             phoneNumber: phoneController.text,
             budget: double.parse(budgetController.text),
+            limit: double.parse(limitController.text),
           ),
           context);
     }

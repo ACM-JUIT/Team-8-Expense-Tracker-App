@@ -1,4 +1,3 @@
-
 import 'package:basecode/components/budget_container.dart';
 import 'package:basecode/components/expense_income_tile.dart';
 import 'package:basecode/features/add_expense/repository/expense_repository.dart';
@@ -360,6 +359,11 @@ class _MainScreenState extends State<MainScreen> {
                         ),
                 );
               }
+              if (user.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
               return Scaffold(
                 appBar: AppBar(),
                 body: Center(
@@ -367,6 +371,11 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               );
             },
+          );
+        }
+        if (expenses.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
           );
         }
         return Scaffold(
