@@ -1,7 +1,7 @@
 import 'package:basecode/components/show_snackbar.dart';
 import 'package:basecode/core/constants/constants.dart';
 import 'package:basecode/model/user_model.dart';
-import 'package:basecode/services/home/screen/home_screen.dart';
+import 'package:basecode/features/home/screen/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +51,8 @@ class AuthRepository {
         uid: userCredential.user!.uid,
         name: name,
         email: email,
+        budget: 10000,
+        limit: 1000,
         avatar: userCredential.user!.photoURL ?? Constants.avatarDefault,
         phoneNumber: userCredential.user!.phoneNumber ?? '',
       );
@@ -93,6 +95,8 @@ class AuthRepository {
             name: userCredential.user!.displayName ?? "No name",
             email: userCredential.user!.email!,
             avatar: userCredential.user!.photoURL ?? Constants.avatarDefault,
+            budget: 10000,
+            limit: 1000,
             phoneNumber: userCredential.user!.phoneNumber ?? '',
           );
 

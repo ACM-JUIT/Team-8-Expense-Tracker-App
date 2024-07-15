@@ -1,11 +1,15 @@
 import 'package:basecode/firebase_options.dart';
-import 'package:basecode/services/add_expense/repository/expense_repository.dart';
-import 'package:basecode/services/auth/repository/auth_repository.dart';
-import 'package:basecode/services/auth/screen/log_in_screen.dart';
-import 'package:basecode/services/home/screen/home_screen.dart';
-import 'package:basecode/services/on_boarding/screen/on_boarding_screen.dart';
+import 'package:basecode/features/add_expense/repository/expense_repository.dart';
+import 'package:basecode/features/auth/repository/auth_repository.dart';
+import 'package:basecode/features/auth/screen/log_in_screen.dart';
+import 'package:basecode/features/home/screen/home_screen.dart';
+import 'package:basecode/features/on_boarding/screen/on_boarding_screen.dart';
+import 'package:basecode/features/user_profile/repository/storage_repository.dart';
+import 'package:basecode/features/user_profile/repository/user_profile_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,6 +41,12 @@ class MyApp extends StatelessWidget {
         Provider(
           create: (_) => ExpenseRepository(),
         ),
+        Provider(
+          create: (_) => UserProfileRepository(firestore: FirebaseFirestore.instance),
+        ),
+        Provider(
+          create: (_) => StorageRepository(firebaseStorage: FirebaseStorage.instance),
+        ),
       ],
       child: MaterialApp(
         title: 'Track it',
@@ -56,7 +66,6 @@ class AuthGate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("yo");
     return Scaffold(
       body: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),

@@ -76,7 +76,7 @@ class BudgetContainer extends StatelessWidget {
                               fontSize: 10, fontWeight: FontWeight.w900),
                         ),
                         value: ratio2,
-                        radius: 35,
+                        radius: 38,
                         showTitle: false,
                         color: Color(0xFFF9F9FC),
                       ),

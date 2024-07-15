@@ -9,6 +9,7 @@ class AddExpenseTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  TextField(
+      controller: controller,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(horizontal: 20),
         hintText: hint,

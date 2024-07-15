@@ -1,20 +1,15 @@
 class Category {
   String id;
   String name;
-  int totalExpenses;
   String icon;
   int color;
 
   Category({
     required this.id,
     required this.name,
-    required this.totalExpenses,
     required this.icon,
     required this.color,
   });
-
-
-  
   Category copyWith({
     String? id,
     String? name,
@@ -25,7 +20,6 @@ class Category {
     return Category(
       id: id ?? this.id,
       name: name ?? this.name,
-      totalExpenses: totalExpenses ?? this.totalExpenses,
       icon: icon ?? this.icon,
       color: color ?? this.color,
     );
@@ -33,7 +27,6 @@ class Category {
   static final empty = Category(
     id: '', 
     name: '', 
-    totalExpenses: 0, 
     icon: '', 
     color: 0
   );
@@ -42,7 +35,6 @@ class Category {
     return {
       'id': id,
       'name': name,
-      'totalExpenses': totalExpenses,
       'icon': icon,
       'color': color,
     };
@@ -52,7 +44,6 @@ class Category {
     return Category(
       id: map['id'] ?? '',
       name: map['name'] ?? '',
-      totalExpenses: map['totalExpenses']?.toInt() ?? 0,
       icon: map['icon'] ?? '',
       color: map['color']?.toInt() ?? 0,
     );
