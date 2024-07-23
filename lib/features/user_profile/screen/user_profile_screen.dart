@@ -93,9 +93,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       UserProfileTile(
                         title: "LogOut",
                         subTitle: "Log out, your data wil persist.",
-                        onTap: () {
-                          context.read<AuthRepository>().signOut(context);
-                        },
+                        onTap: () => context.read<AuthRepository>().signOut(context),
                         icon: Icons.logout,
                       )
                     ],

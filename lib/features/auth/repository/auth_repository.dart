@@ -1,5 +1,6 @@
 import 'package:basecode/components/show_snackbar.dart';
 import 'package:basecode/core/constants/constants.dart';
+import 'package:basecode/features/auth/screen/log_in_screen.dart';
 import 'package:basecode/model/user_model.dart';
 import 'package:basecode/features/home/screen/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,7 +18,7 @@ class AuthRepository {
 
   String get currentUid => _auth.currentUser!.uid;
 
-  Stream<User?> get authState => FirebaseAuth.instance.authStateChanges();
+  Stream<User?> get authState => _auth.authStateChanges();
 
   CollectionReference get _users =>
       FirebaseFirestore.instance.collection('users');
@@ -29,7 +30,11 @@ class AuthRepository {
   ) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(),
+        ),
+      );
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!);
     }
@@ -105,6 +110,12 @@ class AuthRepository {
           userModel = await getUserData(userCredential.user!.uid).first;
         }
       }
+
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(),
+        ),
+      );
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!); // Displaying the error message
     }
@@ -118,6 +129,12 @@ class AuthRepository {
   Future<void> signOut(BuildContext context) async {
     try {
       await _auth.signOut();
+      await GoogleSignIn().signOut();
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => LogInScreen(),
+        ),
+      );
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!);
     }

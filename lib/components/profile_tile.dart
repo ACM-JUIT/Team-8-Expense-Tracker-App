@@ -9,7 +9,8 @@ class UserProfileTile extends StatelessWidget {
     super.key,
     required this.title,
     required this.subTitle,
-    required this.onTap, required this.icon,
+    required this.onTap,
+    required this.icon,
   });
 
   @override
@@ -19,7 +20,7 @@ class UserProfileTile extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       tileColor: Colors.white,
       leading: IconButton(
-        onPressed: () {},
+        onPressed: () => onTap,
         icon: Icon(icon),
       ),
       title: Text(
