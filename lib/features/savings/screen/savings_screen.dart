@@ -1,4 +1,7 @@
+import 'package:basecode/components/buy_sell_tile.dart';
+import 'package:basecode/components/savings_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 class SavingsScreen extends StatefulWidget {
   const SavingsScreen({super.key});
@@ -27,7 +30,38 @@ class _SavingsScreenState extends State<SavingsScreen> {
           padding: const EdgeInsets.all(15),
           child: Column(
             children: [
-              
+              SavingsTile(
+                imagePath: 'assets/wallet.png',
+                title: "My Wallet",
+                subTitle: "Your Savings",
+                amount: "\₹ 20,043",
+              ),
+              const Gap(20),
+              SavingsTile(
+                imagePath: 'assets/gold.png',
+                title: "Gold",
+                subTitle: "Digital Gold Investment",
+                amount: "\₹ 20.34g",
+              ),
+              const Gap(20),
+              SavingsTile(
+                imagePath: 'assets/bank.png',
+                title: "Indian Overseas Bank",
+                subTitle: "Your Debit Card",
+                amount: "",
+              ),
+              const Gap(60),
+              Image.asset(
+                'assets/gold_savings.png',
+                height: 150,
+              ),
+              const Gap(40),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  BuySellTile(),
+                ],
+              )
             ],
           ),
         ),
