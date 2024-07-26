@@ -20,13 +20,7 @@ class ExpenseRepository {
     return Category.fromMap(docSnapshot.data() as Map<String, dynamic>);
   }
 
-  double _budget = 10000;
-
-  double get budget => _budget;
-
-  set updateBudget(double value) {
-    _budget = value;
-  }
+  
 
   Future<void> addCategory(
     String uid,

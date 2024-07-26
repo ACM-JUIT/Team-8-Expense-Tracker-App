@@ -29,12 +29,14 @@ class AuthRepository {
     BuildContext context,
   ) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(),
-        ),
-      );
+      await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(),
+          ),
+        );
+      
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!);
     }
@@ -110,12 +112,6 @@ class AuthRepository {
           userModel = await getUserData(userCredential.user!.uid).first;
         }
       }
-
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(),
-        ),
-      );
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!); // Displaying the error message
     }

@@ -29,6 +29,7 @@ dependencies:
   firebase_storage: ^12.1.1
   badges: ^3.1.2
   flutter_launcher_icons: ^0.13.1
+  elegant_notification: ^2.2.2
   
 
 dev_dependencies:

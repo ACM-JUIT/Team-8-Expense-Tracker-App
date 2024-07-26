@@ -12,7 +12,13 @@ class MyTextfield extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      validator: (value) {
+        if (value!.isEmpty) {
+          return "please enter $hint";
+        }
+        return null;
+      },
       controller: controller,
       obscureText: obscureText,
       decoration: InputDecoration(
@@ -21,9 +27,8 @@ class MyTextfield extends StatelessWidget {
         filled: true,
         fillColor: Colors.grey.shade200,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide.none
-        ),
+            borderRadius: BorderRadius.circular(20),
+            borderSide: BorderSide.none),
       ),
     );
   }
