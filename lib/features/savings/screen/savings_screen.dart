@@ -10,6 +10,28 @@ class SavingsScreen extends StatefulWidget {
 class _SavingsScreenState extends State<SavingsScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      backgroundColor: const Color(0xFFF0F0F2),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFF0F0F2),
+        title: Text(
+          "Savings",
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            children: [
+              
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
