@@ -78,6 +78,7 @@ class AuthRepository {
     }
   }
 
+
   Future<void> signInWithGoogle(BuildContext context) async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
