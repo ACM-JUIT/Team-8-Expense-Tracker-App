@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 
 class EditProfileTile extends StatelessWidget {
   final String leading;
-  final TextEditingController contoller;
+  final TextEditingController controller;
   const EditProfileTile({
     super.key,
     required this.leading,
-    required this.contoller,
+    required this.controller,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: contoller,
+      controller: controller,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.all(24),
         filled: true,

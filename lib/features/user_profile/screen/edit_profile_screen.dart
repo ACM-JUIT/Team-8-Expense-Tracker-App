@@ -6,6 +6,7 @@ import 'package:basecode/features/auth/repository/auth_repository.dart';
 import 'package:basecode/features/user_profile/repository/storage_repository.dart';
 import 'package:basecode/features/user_profile/repository/user_profile_repository.dart';
 import 'package:basecode/utils/pick_image.dart';
+import 'package:elegant_notification/elegant_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +15,7 @@ class EditProfileScreen extends StatefulWidget {
   final String phoneNumber;
   final double budget;
   final double limit;
+
   const EditProfileScreen({
     super.key,
     required this.name,
@@ -33,37 +35,49 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController limitController = TextEditingController();
   File? profileFile;
 
-  void saveChanges(
-      UserModel user, File? profileFile, BuildContext context) async {
-    if (profileFile != null) {
-      final res = await context.read<StorageRepository>().storeFile(
-            path: 'user/profile',
-            id: context.read<AuthRepository>().currentUid,
-            file: profileFile,
-            context: context,
-          );
-      context.read<UserProfileRepository>().editProfile(
-          user.copyWith(
-            name: nameController.text,
-            phoneNumber: phoneController.text,
-            budget: double.parse(budgetController.text),
-            limit: double.parse(limitController.text),
-            avatar: res,
-          ),
-          context);
-    } else {
-      context.read<UserProfileRepository>().editProfile(
-          user.copyWith(
-            name: nameController.text,
-            phoneNumber: phoneController.text,
-            budget: double.parse(budgetController.text),
-            limit: double.parse(limitController.text),
-          ),
-          context);
+  Future<void> saveChanges(UserModel user, File? profileFile, BuildContext context) async {
+    try {
+      if (profileFile != null) {
+        final res = await context.read<StorageRepository>().storeFile(
+              path: 'user/profile',
+              id: context.read<AuthRepository>().currentUid,
+              file: profileFile,
+              context: context,
+            );
+        await context.read<UserProfileRepository>().editProfile(
+            user.copyWith(
+              name: nameController.text,
+              phoneNumber: phoneController.text,
+              budget: double.parse(budgetController.text),
+              limit: double.parse(limitController.text),
+              avatar: res,
+            ),
+            context);
+      } else {
+        await context.read<UserProfileRepository>().editProfile(
+            user.copyWith(
+              name: nameController.text,
+              phoneNumber: phoneController.text,
+              budget: double.parse(budgetController.text),
+              limit: double.parse(limitController.text),
+            ),
+            context);
+      }
+    ElegantNotification.success(
+      description: Text("Profile updated"),
+    );
+
+    await Future.delayed(Duration(seconds: 2));
+
+    Navigator.of(context).pop();
+    } catch (e) {
+      ElegantNotification.error(
+        description: Text("Failed to update profile: $e"),
+      );
     }
   }
 
-  void selecteProfileImage() async {
+  void selectProfileImage() async {
     final res = await pickImage();
     if (res != null) {
       setState(() {
@@ -82,19 +96,29 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   @override
+  void dispose() {
+    nameController.dispose();
+    phoneController.dispose();
+    budgetController.dispose();
+    limitController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final uid = Provider.of<AuthRepository>(context).currentUid;
-    final user = Provider.of<AuthRepository>(context).getUserData(uid);
+    final userStream = Provider.of<AuthRepository>(context).getUserData(uid);
 
-    return StreamBuilder(
-      stream: user,
+    return StreamBuilder<UserModel>(
+      stream: userStream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          final user = snapshot.data!;
           return Scaffold(
             backgroundColor: const Color(0xFFF0F0F2),
             appBar: AppBar(
               backgroundColor: const Color(0xFFF0F0F2),
-              title: Text(
+              title: const Text(
                 "Edit profile",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -103,17 +127,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               actions: [
                 TextButton(
                   onPressed: () {
-                    saveChanges(snapshot.data!, profileFile, context);
-                    Navigator.of(context).pop();
+                    saveChanges(user, profileFile, context);
                   },
-                  child: Text(
+                  child: const Text(
                     "Save",
                     style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                )
+                ),
               ],
               centerTitle: true,
             ),
@@ -124,12 +148,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     GestureDetector(
-                      onTap: selecteProfileImage,
+                      onTap: selectProfileImage,
                       child: Container(
                         height: MediaQuery.of(context).size.height * 0.18,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: NetworkImage(snapshot.data!.avatar),
+                            image: profileFile != null
+                                ? FileImage(profileFile!)
+                                : NetworkImage(user.avatar) as ImageProvider,
                           ),
                           shape: BoxShape.circle,
                         ),
@@ -138,22 +164,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     const SizedBox(height: 40),
                     EditProfileTile(
                       leading: "Name",
-                      contoller: nameController,
+                      controller: nameController,
                     ),
                     const SizedBox(height: 20),
                     EditProfileTile(
                       leading: "Phone Number",
-                      contoller: phoneController,
+                      controller: phoneController,
                     ),
                     const SizedBox(height: 20),
                     EditProfileTile(
                       leading: "Budget",
-                      contoller: budgetController,
+                      controller: budgetController,
                     ),
                     const SizedBox(height: 20),
                     EditProfileTile(
-                      leading: "limit",
-                      contoller: limitController,
+                      leading: "Limit",
+                      controller: limitController,
                     ),
                   ],
                 ),
@@ -161,7 +187,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
           );
         }
-        return Scaffold(
+        return const Scaffold(
           body: Center(
             child: CircularProgressIndicator(),
           ),
