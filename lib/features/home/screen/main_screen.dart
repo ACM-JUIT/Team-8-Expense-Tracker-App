@@ -261,7 +261,7 @@ class _MainScreenState extends State<MainScreen> {
                                                             ElegantNotification
                                                                 .error(
                                                               description: Text(
-                                                                  "Please verifiy your data"),
+                                                                  "Expense deleted."),
                                                             ).show(context);
                                                           },
                                                           child: Text(

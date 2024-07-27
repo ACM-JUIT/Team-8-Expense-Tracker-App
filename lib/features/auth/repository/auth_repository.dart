@@ -29,14 +29,12 @@ class AuthRepository {
     BuildContext context,
   ) async {
     try {
-      await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => HomeScreen(),
-          ),
-        );
-      
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+        (route) => false,
+      );
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!);
     }
@@ -65,8 +63,11 @@ class AuthRepository {
       );
       _users.doc(userCredential.user!.uid).set(userModel.toMap());
       if (userCredential.user != null) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+        Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+        (route) => false,
+      );
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -77,7 +78,6 @@ class AuthRepository {
       showSnackBar(context, e.message!);
     }
   }
-
 
   Future<void> signInWithGoogle(BuildContext context) async {
     try {

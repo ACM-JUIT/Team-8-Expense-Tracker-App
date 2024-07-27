@@ -15,8 +15,6 @@ class _StatisticsScreenState extends State<StatisticsScreen>
   List<String> tabs = [
     'Weekly',
     'Monthly',
-    'Yearly',
-    'All',
   ];
 
   @override
@@ -71,8 +69,6 @@ class _StatisticsScreenState extends State<StatisticsScreen>
                 children: [
                   WeeklyExpensesPieChart(),
                   MonthlyRevenueChart(),
-                  Text('Yearly'),
-                  Text('All')
                 ],
               ),
             ),
@@ -106,106 +102,101 @@ class MonthlyRevenueChart extends StatelessWidget {
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: screenHeight * 0.3,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: LineChart(
-                  LineChartData(
-                    gridData: FlGridData(
-                      show: false,
+        child: SizedBox(
+          height: screenHeight * 0.4,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: LineChart(
+              LineChartData(
+                gridData: FlGridData(
+                  show: false,
+                ),
+                titlesData: FlTitlesData(
+                  show: true,
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 22,
+                      interval: 1,
+                      getTitlesWidget: (value, meta) {
+                        const style = TextStyle(
+                          color: Color(0xff68737d),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10,
+                        );
+                        String text = '';
+                        if (value.toInt() % 2 == 0) {
+                          text = [
+                            'JAN',
+                            'MAR',
+                            'MAY',
+                            'JUL',
+                            'SEP',
+                            'NOV'
+                          ][value.toInt() ~/ 2];
+                        }
+                        return SideTitleWidget(
+                          axisSide: meta.axisSide,
+                          space: 8.0,
+                          child: Text(text, style: style),
+                        );
+                      },
                     ),
-                    titlesData: FlTitlesData(
-                      show: true,
-                      bottomTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          reservedSize: 22,
-                          interval: 1,
-                          getTitlesWidget: (value, meta) {
-                            const style = TextStyle(
-                              color: Color(0xff68737d),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 10,
-                            );
-                            String text = '';
-                            if (value.toInt() % 2 == 0) {
-                              text = [
-                                'JAN',
-                                'MAR',
-                                'MAY',
-                                'JUL',
-                                'SEP',
-                                'NOV'
-                              ][value.toInt() ~/ 2];
-                            }
-                            return SideTitleWidget(
-                              axisSide: meta.axisSide,
-                              space: 8.0,
-                              child: Text(text, style: style),
-                            );
-                          },
-                        ),
-                      ),
-                      leftTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          interval: 20000,
-                          getTitlesWidget: (value, meta) {
-                            const style = TextStyle(
-                              color: Color(0xff67727d),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 10,
-                            );
-                            String text = '${value ~/ 1000}k';
-                            return SideTitleWidget(
-                              axisSide: meta.axisSide,
-                              space: 8.0,
-                              child: Text(text, style: style),
-                            );
-                          },
-                          reservedSize: 28,
-                        ),
-                      ),
-                      topTitles: AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
-                      ),
-                      rightTitles: AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
-                      ),
+                  ),
+                  leftTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      interval: 20000,
+                      getTitlesWidget: (value, meta) {
+                        const style = TextStyle(
+                          color: Color(0xff67727d),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10,
+                        );
+                        String text = '${value ~/ 1000}k';
+                        return SideTitleWidget(
+                          axisSide: meta.axisSide,
+                          space: 8.0,
+                          child: Text(text, style: style),
+                        );
+                      },
+                      reservedSize: 28,
                     ),
-                    borderData: FlBorderData(
-                      show: true,
-                      border: Border(
-                        bottom: BorderSide(color: Colors.grey, width: 1),
-                        left: BorderSide.none,
-                        right: BorderSide.none,
-                        top: BorderSide.none,
-                      ),
-                    ),
-                    minX: 0,
-                    maxX: 11,
-                    minY: 0,
-                    maxY: 80000,
-                    lineBarsData: [
-                      LineChartBarData(
-                        spots: monthlyData,
-                        isCurved: true,
-                        color: Colors.blue,
-                        barWidth: 3,
-                        isStrokeCapRound: true,
-                        dotData: FlDotData(show: false),
-                        belowBarData: BarAreaData(show: false),
-                      ),
-                    ],
+                  ),
+                  topTitles: AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  rightTitles: AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
                   ),
                 ),
+                borderData: FlBorderData(
+                  show: true,
+                  border: Border(
+                    bottom: BorderSide(color: Colors.grey, width: 1),
+                    left: BorderSide.none,
+                    right: BorderSide.none,
+                    top: BorderSide.none,
+                  ),
+                ),
+                minX: 0,
+                maxX: 11,
+                minY: 0,
+                maxY: 80000,
+                lineBarsData: [
+                  LineChartBarData(
+                    spots: monthlyData,
+                    isCurved: true,
+                    color: Colors.blue,
+                    barWidth: 3,
+                    isStrokeCapRound: true,
+                    dotData: FlDotData(show: false),
+                    belowBarData: BarAreaData(show: false),
+                  ),
+                ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -235,14 +226,14 @@ class WeeklyExpensesPieChart extends StatelessWidget {
             PieChart(
               PieChartData(
                 sectionsSpace: 0,
-                centerSpaceRadius: 80,
+                centerSpaceRadius: 100,
                 sections: expenses.map(
                   (expense) {
                     return PieChartSectionData(
                       color: expense.color,
                       value: expense.amount,
                       title: '${expense.day}\n\₹ ${expense.amount.round()}',
-                      radius: 50,
+                      radius: 40,
                       titleStyle: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
