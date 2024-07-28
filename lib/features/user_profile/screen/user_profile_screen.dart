@@ -32,10 +32,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       Container(
                         height: MediaQuery.of(context).size.height * 0.18,
                         decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(snapshot.data!.avatar),
+                          image: DecorationImage(
+                            image: NetworkImage(
+                              snapshot.data!.avatar,
                             ),
-                            shape: BoxShape.circle),
+                          ),
+                          shape: BoxShape.circle,
+                        ),
                       ),
                       const SizedBox(height: 10),
                       Text(
@@ -67,7 +70,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       const SizedBox(height: 20),
                       UserProfileTile(
                         title: "UserProfile",
-                        subTitle: "Change profile image, name, phone number,etc.",
+                        subTitle:
+                            "Change profile image, name, phone number,etc.",
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
@@ -93,7 +97,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       UserProfileTile(
                         title: "LogOut",
                         subTitle: "Log out, your data wil persist.",
-                        onTap: () => context.read<AuthRepository>().signOut(context),
+                        onTap: () =>
+                            context.read<AuthRepository>().signOut(context),
                         icon: Icons.logout,
                       )
                     ],

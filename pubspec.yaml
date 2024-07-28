@@ -29,6 +29,10 @@ dependencies:
   firebase_storage: ^12.1.1
   badges: ^3.1.2
   flutter_launcher_icons: ^0.13.1
+  elegant_notification: ^2.2.2
+  gap: ^3.0.1
+  flutter_facebook_auth: ^7.0.1
+  permission_handler: ^11.3.1
   
 
 dev_dependencies:

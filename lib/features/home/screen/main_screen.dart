@@ -2,6 +2,7 @@ import 'package:basecode/components/budget_container.dart';
 import 'package:basecode/components/expense_income_tile.dart';
 import 'package:basecode/features/add_expense/repository/expense_repository.dart';
 import 'package:basecode/features/auth/repository/auth_repository.dart';
+import 'package:elegant_notification/elegant_notification.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -184,6 +185,14 @@ class _MainScreenState extends State<MainScreen> {
                                                       listen: false)
                                                   .deleteExpense(
                                                       uid, expense, context);
+                                              ElegantNotification.error(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.75,
+                                                description:
+                                                    Text("Expense deleted."),
+                                              ).show(context);
                                             },
                                             child: GestureDetector(
                                               onTap: () {
@@ -249,6 +258,11 @@ class _MainScreenState extends State<MainScreen> {
                                                             Navigator.of(
                                                                     context)
                                                                 .pop();
+                                                            ElegantNotification
+                                                                .error(
+                                                              description: Text(
+                                                                  "Expense deleted."),
+                                                            ).show(context);
                                                           },
                                                           child: Text(
                                                             "Delete",

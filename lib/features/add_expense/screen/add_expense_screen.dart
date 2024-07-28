@@ -4,6 +4,9 @@ import 'package:basecode/model/expense_model.dart';
 import 'package:basecode/features/add_expense/repository/expense_repository.dart';
 import 'package:basecode/features/add_expense/screen/category_creation.dart';
 import 'package:basecode/features/auth/repository/auth_repository.dart';
+import 'package:elegant_notification/elegant_notification.dart';
+import 'package:elegant_notification/resources/arrays.dart';
+import 'package:elegant_notification/resources/stacked_options.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -136,7 +139,6 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 TextField(
                   controller: datecontroller,
                   readOnly: true,
-                  
                   onTap: () async {
                     pickDate();
                   },
@@ -196,13 +198,22 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                           .read<ExpenseRepository>()
                           .addExpense(uid, expense, context);
 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            "Expense Added!!!!",
-                          ),
+                      ElegantNotification.success(
+                        width: 360,
+                        isDismissable: false,
+                        animationCurve: Curves.bounceOut,
+                        stackedOptions: StackedOptions(
+                          key: 'top',
+                          type: StackedType.same,
+                          itemOffset: Offset(-5, -5),
                         ),
-                      );
+                        progressIndicatorBackground: const Color(0xFF322F50),
+                        position: Alignment.topCenter,
+                        animation: AnimationType.fromTop,
+                        title: Text('Added'),
+                        description: Text('Your Expense has been updated'),
+                        
+                      ).show(context);
                     },
                     color: const Color(0xFF322F50),
                   ),
