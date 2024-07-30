@@ -82,39 +82,43 @@ class AuthRepository {
   Future<void> signInWithGoogle(BuildContext context) async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
-
+      
+      final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+      
       if (googleAuth?.accessToken != null && googleAuth?.idToken != null) {
-        // Create a new credential
         final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth?.accessToken,
           idToken: googleAuth?.idToken,
         );
-        UserCredential userCredential =
-            await _auth.signInWithCredential(credential);
+        
+        UserCredential userCredential = await _auth.signInWithCredential(credential);
+        
+        // Check if the user already exists in Firestore
+        DocumentSnapshot userDoc = await _users.doc(userCredential.user!.uid).get();
 
-        UserModel userModel;
-
-        if (userCredential.additionalUserInfo!.isNewUser) {
-          userModel = UserModel(
+        if (!userDoc.exists) {
+          // If the user doesn't exist, create a new user document
+          UserModel newUser = UserModel(
             uid: userCredential.user!.uid,
             name: userCredential.user!.displayName ?? "No name",
             email: userCredential.user!.email!,
-            avatar: userCredential.user!.photoURL ?? Constants.avatarDefault,
+            avatar: userCredential.user!.photoURL ?? "default_avatar_url",
             budget: 10000,
             limit: 1000,
             phoneNumber: userCredential.user!.phoneNumber ?? '',
           );
-
-          await _users.doc(userModel.uid).set(userModel.toMap());
+          
+          await _users.doc(newUser.uid).set(newUser.toMap());
+          print('New user created: ${newUser.name}');
         } else {
-          userModel = await getUserData(userCredential.user!.uid).first;
+          // If the user exists, retrieve their data
+          Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+          UserModel existingUser = UserModel.fromMap(userData);
+          print('Existing user signed in: ${existingUser.name}');
         }
       }
     } on FirebaseAuthException catch (e) {
-      showSnackBar(context, e.message!); // Displaying the error message
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message ?? 'An error occurred')));
     }
   }
 

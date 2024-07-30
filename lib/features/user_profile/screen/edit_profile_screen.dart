@@ -35,7 +35,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController limitController = TextEditingController();
   File? profileFile;
 
-  Future<void> saveChanges(UserModel user, File? profileFile, BuildContext context) async {
+  Future<void> saveChanges(
+      UserModel user, File? profileFile, BuildContext context) async {
     try {
       if (profileFile != null) {
         final res = await context.read<StorageRepository>().storeFile(
@@ -54,6 +55,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
             context);
       } else {
+        ElegantNotification.info(
+          description: Text("Profile Updating..."),
+        );
         await context.read<UserProfileRepository>().editProfile(
             user.copyWith(
               name: nameController.text,
@@ -63,13 +67,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
             context);
       }
-    ElegantNotification.success(
-      description: Text("Profile updated"),
-    );
+      ElegantNotification.success(
+        description: Text("Profile updated"),
+      );
 
-    await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(Duration(seconds: 2));
 
-    Navigator.of(context).pop();
+      Navigator.of(context).pop();
     } catch (e) {
       ElegantNotification.error(
         description: Text("Failed to update profile: $e"),
