@@ -373,6 +373,9 @@ class _MainScreenState extends State<MainScreen> {
                         ),
                 );
               }
+              if (user.hasError) {
+                return Center(child: Text('Error: ${user.error}'));
+              }
               if (user.connectionState == ConnectionState.waiting) {
                 return Center(
                   child: CircularProgressIndicator(),
